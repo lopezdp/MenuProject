@@ -1,5 +1,5 @@
 # Restaurant Menus Web Application
-This is an application that allows the user to view different restaurant menus. There is functionality for the user to add to, edit, and delete menu items from the selected restaurant menus also. The project is built using Python3 to create the _Route Handlers_ in _Flask_.
+This is an application that allows the user to view different restaurant menus and to add, edit, or delete restaurants as needed. There is functionality for the user to add to, edit, and delete menu items from the selected restaurant menus also. The project is built using Python3 to create the _Route Handlers_ in _Flask_.
 
 ## Installation
 1. Python 3.x.x is needed to run the back end of this Flask application

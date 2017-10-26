@@ -8,7 +8,11 @@
                 <h1>{{restaurant.name}}</h1>
             </div>
 
-            <a href="{{url_for('newMenuItem', restaurant_id=restaurant.id)}}">Create New Item</a>
+            {% if  not items[0] %}
+                    <p>You currently have no menu items.</p>
+            {% endif %}
+
+            <a href="#">Create New Item</a>
             </br>
             </br>
             <!-- Flashing messages -->
@@ -16,34 +20,38 @@
             {% if messages %}
 
             <ul>
-            {% for message in messages %}
-                <li><strong>{{message}}</strong></li>
+                {% for message in messages %}
+                    <li><strong>{{message}}</strong></li>
                 {% endfor %}
             </ul>
             {% endif %}
             {% endwith %}
 
+
             {% for i in items %}
+                {% if  i.id == '3'  or items.length == 0 %}
+                    
+                {% else %}
+                    <h3>{{i.course}}</h3>
+                {% endif %}
+                
+                <div>
+                    {{i.name}}
+                    </br>
 
-            <div>
-                {{i.name}}
-                </br>
+                    {{i.description}}
+                    </br>
 
-                {{i.description}}
-                </br>
-
-                {{i.price}}
-                <!-- Insert Code here -->
-                </br>
-                <a href='{{url_for("editMenuItem", restaurant_id = restaurant.id, menu_id = i.id)}}'> Edit </a>
-
-                <a href='{{url_for("deleteMenuItem", restaurant_id = restaurant.id, menu_id = i.id)}}'> Delete </a>
-
-
-                </br>
-                </br>
-            </div>
-
+                    {{i.price}}
+                    <!-- Edit/Delete buttons -->
+                    </br>
+                    <a href='#'> Edit Item</a>
+                    </br>
+                    <a href='#'> Delete Item</a>
+                    </br>
+                    </br>
+                </div>
+                
             {% endfor %}
         </div>
     </body>

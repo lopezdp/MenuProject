@@ -2,11 +2,34 @@
     <body>
         <h1>New Menu Item</h1>
 
-        <form action="{{url_for('newMenuItem', restaurant_id=restaurant_id)}}" method="POST">
+        <form action="#" method="POST">
 
             <p>Name:</p>
                 <input type="text" size="30" name="name">
 
+            <p>Description:</p>
+                <input type="text" size="30" name="name">
+
+            <p>Price:</p>
+                <input type="text" size="30" name="name">
+
+            <p>Course:</p>
+                <input type="radio" id="Appetizer" name= "Appetizer" value="Appetizer">
+                <label for="Appetizer">Appetizer</label>
+                <br>
+
+                <input type="radio" id="Entree" name= "Entree" value="Entree">
+                <label for="Entree">Entree</label>
+                <br>
+
+                <input type="radio" id="Dessert" name= "Dessert" value="Dessert">
+                <label for="Dessert">Dessert</label>
+                <br>
+
+                <input type="radio" id="Beverage" name= "Beverage" value="Beverage">
+                <label for="Beverage">Beverage</label>
+                <br>
+                <br>
             <input type="submit" value="Create">
         </form>
     </body>
