@@ -30,53 +30,43 @@ class Restaurant(Base):
     )
 
     street = Column (
-    	String(80),
-    	nullable = False
+    	String(80)
     )
 
     city = Column (
-    	String(80),
-    	nullable = False
+    	String(80)
     )
 
     state = Column (
-    	String(2),
-    	nullable = False
+    	String(2)
     )
 
     zipCode = Column (
-    	Integer,
-    	nullable = False
+    	Integer
     )
 
     phone = Column (
-    	String(10),
-    	nullable = False
+    	String(10)
     )
 
     email = Column (
-    	String(50),
-    	nullable = False
+    	String(50)
     )
 
     website = Column (
-    	String(50),
-    	nullable = False
+    	String(50)
     )
 
     cuisine = Column (
-    	String(80),
-    	nullable = False
+    	String(80)
     )
 
     description = Column (
-    	String(160),
-    	nullable = False
+    	String(160)
     )
 
     delivery = Column (
-    	String(3),
-    	nullable = False
+    	String(3)
     )
 
     @property
@@ -145,7 +135,7 @@ class MenuItem(Base):
         }
 
 # Insert at EOF
-engine = create_engine('sqlite:///restaurantmenu.db')
+engine = create_engine('sqlite:///restaurantmenus.db')
 
 Base.metadata.create_all(engine)
 

@@ -1,8 +1,8 @@
 <html>
     <body>
-        <h1>New RESTAURANT</h1>
+        <h1>{{title}}</h1>
 
-        <form action="#" method="POST">
+        <form action="{{url_for('newRestaurant')}}" method="post">
 
             <p>Restaurant Name:</p>
                 <input type="text" size="80" name="name">
@@ -26,7 +26,8 @@
                 <input type="text" size="160" name="description">
             <p>Delivery:</p>
                 <input type="text" size="3" name="delivery">
-
+            <br>
+            <br>
             <input type="submit" value="Create">
         </form>
     </body>

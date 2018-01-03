@@ -8,7 +8,7 @@ from sqlalchemy.orm import sessionmaker
 from restaurantMenuSchema import Base, Restaurant, MenuItem
 
 # Create Session and connect to SQLite db
-engine = create_engine('sqlite:///restaurantmenu.db')
+engine = create_engine('sqlite:///restaurantmenus.db')
 # Bind the engine to the metadata of the Base class so that the
 # declaratives can be accessed through a DBSession instance
 Base.metadata.bind = engine
@@ -44,17 +44,16 @@ item =  {'name':'Cheese Pizza','description':'made with fresh cheese','price':'$
 @app.route('/')
 @app.route('/restaurants/')
 def showRestaurants():
-    restaurant = restaurants
     # return "This page will show all restaurants"
-    return render_template('restaurants.html', restaurant = restaurant)
+    return render_template('restaurants.html')
 
-@app.route('/restaurant/new/')
+@app.route('/restaurant/new/', methods=['GET', 'POST'])
 # Method to create newRestaurant
 def newRestaurant():
     if request.method == 'POST':
         # Store restaurant input from form into newRestaurant
         newRestaurant = Restaurant(
-            name = request.form['name'],
+            name = request.form['name'].strip(),
             street = request.form['street'],
             city = request.form['city'],
             state = request.form['state'],
@@ -71,10 +70,10 @@ def newRestaurant():
         # commit newRestaurant item to db
         session.commit()
 
-
-    # return "This page will be for adding a new restaurant"
-
-    return render_template('newRestaurant.html', restaurant = restaurant)
+        flash("New Restaurant: " + newRestaurant.name + "--> Created!")
+        return redirect(url_for('showRestaurants'))
+    else:
+        return render_template('newRestaurant.html', title="New Restaurant Input")
 
 @app.route('/restaurant/<int:restaurant_id>/edit/')
 def editRestaurant(restaurant_id):
@@ -116,5 +115,6 @@ def deleteMenuItem(restaurant_id, menu_id):
     return render_template('deleteMenuItem.html', restaurant = restaurant, item = item)
 
 if __name__ == '__main__':
+    app.secret_key = 'super_secret_key'
     app.debug = True
     app.run(host = '0.0.0.0', port = 5000)
