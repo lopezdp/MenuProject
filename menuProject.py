@@ -39,16 +39,16 @@ def newRestaurant():
         # Store restaurant input from form into newRestaurant
         newRestaurant = Restaurant(
             name = request.form['name'].strip(),
-            street = request.form['street'],
-            city = request.form['city'],
-            state = request.form['state'],
-            zipCode = request.form['zipCode'],
-            phone = request.form['phone'],
-            email = request.form['email'],
-            website = request.form['website'],
-            cuisine = request.form['cuisine'],
-            description = request.form['description'],
-            delivery = request.form['delivery']
+            street = request.form['street'].strip(),
+            city = request.form['city'].strip(),
+            state = request.form['state'].strip(),
+            zipCode = request.form['zipCode'].strip(),
+            phone = request.form['phone'].strip(),
+            email = request.form['email'].strip(),
+            website = request.form['website'].strip(),
+            cuisine = request.form['cuisine'].strip(),
+            description = request.form['description'].strip(),
+            delivery = request.form['delivery'].strip()
         )
         # add newRestaurant item to db stage
         session.add(newRestaurant)
@@ -69,19 +69,19 @@ def editRestaurant(restaurant_id):
     if request.method == 'POST':
         if request.form:
             restaurant.name = request.form['name'].strip()
-            restaurant.street = request.form['street'].strip(),
-            restaurant.city = request.form['city'].strip(),
-            restaurant.state = request.form['state'].strip(),
-            restaurant.zipCode = request.form['zipCode'].strip(),
-            restaurant.phone = request.form['phone'].strip(),
-            restaurant.email = request.form['email'].strip(),
-            restaurant.website = request.form['website'].strip(),
-            restaurant.cuisine = request.form['cuisine'].strip(),
-            restaurant.description = request.form['description'].strip(),
+            restaurant.street = request.form['street'].strip()
+            restaurant.city = request.form['city'].strip()
+            restaurant.state = request.form['state'].strip()
+            restaurant.zipCode = request.form['zipCode'].strip()
+            restaurant.phone = request.form['phone'].strip()
+            restaurant.email = request.form['email'].strip()
+            restaurant.website = request.form['website'].strip()
+            restaurant.cuisine = request.form['cuisine'].strip()
+            restaurant.description = request.form['description'].strip()
             restaurant.delivery = request.form['delivery'].strip()
         session.add(restaurant)
         session.commit()
-        flash("New Restaurant: " + newRestaurant.name + "--> Updated!")
+        flash("New Restaurant: " + restaurant.name + "--> Updated!")
         return redirect(url_for('showRestaurants'))
     else:
         restaurant = session.query(Restaurant).filter_by(id=restaurant_id).one()
