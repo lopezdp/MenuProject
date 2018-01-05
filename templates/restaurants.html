@@ -7,20 +7,28 @@
 
         {% for i in restaurants %}
             <div>
-                {{i.name}}
-                </br>
-                {{i.cuisine}}
+                {{i.name}} <br>
+                {{i.street}} <br>
+                {{i.city}} <br>
+                {{i.state}} <br>
+                {{i.zipCode}} <br>
+                {{i.phone}} <br>
+                {{i.email}} <br>
+                {{i.website}} <br>
+                {{i.cuisine}} <br>
+                {{i.description}} <br>
+                {{i.delivery}}
 
                 <!-- Insert Code here -->
-                </br>
+                <br>
                 <a href="{{url_for('editRestaurant', restaurant_id=i.id)}}"> Edit Restaurant</a>
-                </br>
-                </br>
-                <a href='#'> Delete Restaurant</a>
+                <br>
+                <br>
+                <a href="{{url_for('deleteRestaurant', restaurant_id=i.id)}}"> Delete Restaurant</a>
 
 
-                </br>
-                </br>
+                <br>
+                <br>
             </div>
         {% endfor %}
     </body>

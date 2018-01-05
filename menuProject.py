@@ -68,6 +68,7 @@ def editRestaurant(restaurant_id):
     restaurant = session.query(Restaurant).filter_by(id=restaurant_id).one()
     if request.method == 'POST':
         if request.form:
+            # Store edited field data and POST to db
             restaurant.name = request.form['name'].strip()
             restaurant.street = request.form['street'].strip()
             restaurant.city = request.form['city'].strip()
@@ -79,21 +80,35 @@ def editRestaurant(restaurant_id):
             restaurant.cuisine = request.form['cuisine'].strip()
             restaurant.description = request.form['description'].strip()
             restaurant.delivery = request.form['delivery'].strip()
+        # add editRestaurant data to db stage
         session.add(restaurant)
+        # commit editRestaurant data to db
         session.commit()
+
+        # flash msg to indicate success
         flash("New Restaurant: " + restaurant.name + "--> Updated!")
+        # redirect user to updated list of restaurants
         return redirect(url_for('showRestaurants'))
     else:
         restaurant = session.query(Restaurant).filter_by(id=restaurant_id).one()
         return render_template('editRestaurant.html', title='Edit Restaurant', restaurant=restaurant)
 
-
-    # return "This page will be for editing restaurant %s" % restaurant_id
-    return render_template('editRestaurant.html', restaurant = restaurant)
-
-@app.route('/restaurant/<int:restaurant_id>/delete/')
+@app.route('/restaurant/<int:restaurant_id>/delete/', methods=['GET', 'POST'])
 def deleteRestaurant(restaurant_id):
-    restaurant = restaurants[restaurant_id]
+    # query db by restaurant_id and assign to restaurant variable
+    restaurant = session.query(Restaurant).filter_by(id=restaurant_id).one()
+    if request.method == 'POST':
+        session.delete(restaurant)
+        session.commit()
+        flash("Former Restaurant: " + restaurant.name + "--> Deleted!")
+        # redirect user to updated list of restaurants
+        return redirect(url_for('showRestaurants'))
+    else:
+        return render_template('deleteRestaurant.html', title='Confirm Delete Restaurant', restaurant=restaurant)
+
+
+
+
     # return "This page will be for deleting restaurant %s" % restaurant_id
     return render_template('deleteRestaurant.html', restaurant = restaurant)
 
