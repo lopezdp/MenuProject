@@ -5,14 +5,15 @@
     <body>
         <h1>Restaurants</h1>
 
-        {% for i in restaurant %}
+        {% for i in restaurants %}
             <div>
                 {{i.name}}
                 </br>
+                {{i.cuisine}}
 
                 <!-- Insert Code here -->
                 </br>
-                <a href='#'> Edit Restaurant</a>
+                <a href="{{url_for('editRestaurant', restaurant_id=i.id)}}"> Edit Restaurant</a>
                 </br>
                 </br>
                 <a href='#'> Delete Restaurant</a>

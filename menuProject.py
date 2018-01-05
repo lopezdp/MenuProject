@@ -23,29 +23,14 @@ DBSession = sessionmaker(bind=engine)
 # session.rollback()
 session = DBSession()
 
-
-#Fake Restaurants
-restaurant = {'name': 'The CRUDdy Crab', 'id': '1'}
-
-restaurants = [{'name': 'The CRUDdy Crab', 'id': '1'}, {'name':'Blue Burgers', 'id':'2'},{'name':'Taco Hut', 'id':'3'}]
-
-
-#Fake Menu Items
-items = [{'name':'Spinach Dip', 'description':'creamy dip with fresh spinach','price':'$1.99', 'course':'Appetizer','id':'1'},
-{'name':'Cheese Pizza', 'description':'made with fresh cheese', 'price':'$5.99','course' :'Entree', 'id':'2'},
-{'name':'Caesar Salad', 'description':'with fresh organic vegetables','price':'$5.99', 'course':'Entree','id':'3'},
-{'name':'Iced Tea', 'description':'with lemon','price':'$.99', 'course':'Beverage','id':'4'},
-{'name':'Chocolate Cake','description':'made with Dutch Chocolate', 'price':'$3.99', 'course':'Dessert','id':'5'}
-]
-
-item =  {'name':'Cheese Pizza','description':'made with fresh cheese','price':'$5.99','course' :'Entree'}
-
 # Building API Endpoints/Route Handlers (GET Request)
 @app.route('/')
 @app.route('/restaurants/')
 def showRestaurants():
+    # query db and assign to restaurants variable
+    restaurants = session.query(Restaurant).order_by('id asc').all()
     # return "This page will show all restaurants"
-    return render_template('restaurants.html')
+    return render_template('restaurants.html', restaurants=restaurants)
 
 @app.route('/restaurant/new/', methods=['GET', 'POST'])
 # Method to create newRestaurant
@@ -70,14 +55,39 @@ def newRestaurant():
         # commit newRestaurant item to db
         session.commit()
 
+        # flash message to indicate success
         flash("New Restaurant: " + newRestaurant.name + "--> Created!")
+        # redirect user to updated list of restaurants
         return redirect(url_for('showRestaurants'))
     else:
         return render_template('newRestaurant.html', title="New Restaurant Input")
 
-@app.route('/restaurant/<int:restaurant_id>/edit/')
+@app.route('/restaurant/<int:restaurant_id>/edit/', methods=['GET', 'POST'])
 def editRestaurant(restaurant_id):
-    restaurant = restaurants[restaurant_id]
+    # query db by restaurant_id and assign to restaurant variable
+    restaurant = session.query(Restaurant).filter_by(id=restaurant_id).one()
+    if request.method == 'POST':
+        if request.form:
+            restaurant.name = request.form['name'].strip()
+            restaurant.street = request.form['street'].strip(),
+            restaurant.city = request.form['city'].strip(),
+            restaurant.state = request.form['state'].strip(),
+            restaurant.zipCode = request.form['zipCode'].strip(),
+            restaurant.phone = request.form['phone'].strip(),
+            restaurant.email = request.form['email'].strip(),
+            restaurant.website = request.form['website'].strip(),
+            restaurant.cuisine = request.form['cuisine'].strip(),
+            restaurant.description = request.form['description'].strip(),
+            restaurant.delivery = request.form['delivery'].strip()
+        session.add(restaurant)
+        session.commit()
+        flash("New Restaurant: " + newRestaurant.name + "--> Updated!")
+        return redirect(url_for('showRestaurants'))
+    else:
+        restaurant = session.query(Restaurant).filter_by(id=restaurant_id).one()
+        return render_template('editRestaurant.html', title='Edit Restaurant', restaurant=restaurant)
+
+
     # return "This page will be for editing restaurant %s" % restaurant_id
     return render_template('editRestaurant.html', restaurant = restaurant)
 

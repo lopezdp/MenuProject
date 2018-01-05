@@ -1,12 +1,34 @@
 <html>
     <body>
-        <h1>Edit Restaurant</h1>
+        <h1>{{title}}</h1>
 
-        
-        <form action="#" method="POST">
 
-            <p>Name:</p>
+        <form action="#" method="post">
+
+            <p>Restaurant Name:</p>
                 <input type="text" size="30" name="name" placeholder="{{restaurant.name}}">
+            <p>Street:</p>
+                <input type="text" size="80" name="street" placeholder="{{restaurant.street}}">
+            <p>City:</p>s
+                <input type="text" size="80" name="city" placeholder="{{restaurant.city}}">
+            <p>State:</p>
+                <input type="text" size="2" name="state" placeholder="{{restaurant.state}}">
+            <p>Zip Code:</p>
+                <input type=number name="zipCode" placeholder="{{restaurant.zipCode}}">
+            <p>Phone:</p>
+                <input type="text" size="10" name="phone" placeholder="{{restaurant.phone}}">
+            <p>Email:</p>
+                <input type="text" size="50" name="email" placeholder="{{restaurant.email}}">
+            <p>Website:</p>
+                <input type="text" size="50" name="website" placeholder="{{restaurant.website}}">
+            <p>Cuisine:</p>
+                <input type="text" size="80" name="cuisine" placeholder="{{restaurant.cuisine}}">
+            <p>Description:</p>
+                <input type="text" size="160" name="description" placeholder="{{restaurant.description}}">
+            <p>Delivery:</p>
+                <input type="text" size="3" name="delivery" placeholder="{{restaurant.delivery}}">
+            <br>
+            <br>
 
             <input type="submit" value="Edit">
             <a href="#">Cancel</a>
