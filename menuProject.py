@@ -98,7 +98,9 @@ def deleteRestaurant(restaurant_id):
     # query db by restaurant_id and assign to restaurant variable
     restaurant = session.query(Restaurant).filter_by(id=restaurant_id).one()
     if request.method == 'POST':
+        # delete restaurant object obtained from db query
         session.delete(restaurant)
+        # commit delete to db
         session.commit()
         flash("Former Restaurant: " + restaurant.name + "--> Deleted!")
         # redirect user to updated list of restaurants
@@ -106,19 +108,23 @@ def deleteRestaurant(restaurant_id):
     else:
         return render_template('deleteRestaurant.html', title='Confirm Delete Restaurant', restaurant=restaurant)
 
-
-
-
-    # return "This page will be for deleting restaurant %s" % restaurant_id
-    return render_template('deleteRestaurant.html', restaurant = restaurant)
-
 @app.route('/restaurant/<int:restaurant_id>/menu/')
 @app.route('/restaurant/<int:restaurant_id>/')
 def showMenu(restaurant_id):
-    restaurant = restaurants[restaurant_id]
-    item = items
+
+    # query db to find Restaurant
+    restaurant = session.query(Restaurant).filter_by(id = restaurant_id).one()
+
+    # query db to find items for restaurant
+    items = session.query(MenuItem).filter_by(restaurantid = restaurant_id)
+
     # return "This page is the menu for restaurant %s" % restaurant_id
-    return render_template('menu.html', restaurant = restaurant, items = item)
+    return render_template('menu.html', restaurant = restaurant, items = items)
+
+
+
+
+
 
 @app.route('/restaurant/<int:restaurant_id>/new/')
 def newMenuItem(restaurant_id):
