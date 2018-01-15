@@ -86,7 +86,7 @@ def editRestaurant(restaurant_id):
         session.commit()
 
         # flash msg to indicate success
-        flash("New Restaurant: " + restaurant.name + " ==> Updated!")
+        flash("Edited Restaurant: " + restaurant.name + " ==> Updated!")
         # redirect user to updated list of restaurants
         return redirect(url_for('showRestaurants'))
     else:
@@ -102,7 +102,7 @@ def deleteRestaurant(restaurant_id):
         session.delete(restaurant)
         # commit delete to db
         session.commit()
-        flash("Former Restaurant: " + restaurant.name + " ==> Deleted!")
+        flash("Deleted Restaurant: " + restaurant.name + " ==> Deleted!")
         # redirect user to updated list of restaurants
         return redirect(url_for('showRestaurants'))
     else:
@@ -146,7 +146,7 @@ def newMenuItem(restaurant_id):
         # redirect user to updated list of menuItems for chosen restaurant
         return redirect(url_for('showMenu', restaurant_id = restaurant_id))
     else:
-        return render_template('newMenuItem.html', title = "New Menu Item Input")
+        return render_template('newMenuItem.html', title = "New Menu Item Input", restaurant = restaurant)
 
 @app.route('/restaurant/<int:restaurant_id>/menu/<int:menu_id>/edit/', methods =['GET', 'POST'])
 def editMenuItem(restaurant_id, menu_id):
@@ -161,7 +161,6 @@ def editMenuItem(restaurant_id, menu_id):
             item.course = request.form['course'].strip()
             item.description = request.form['description'].strip()
             item.price = request.form['price'].strip()
-            item.zipCode = request.form['zipCode'].strip()
             #item.restaurantid = restaurant_id
 
         # add editMenuItem data to db stage
@@ -170,7 +169,7 @@ def editMenuItem(restaurant_id, menu_id):
         session.commit()
 
         # flash msg to indicate success
-        flash("New Item: " + item.name + item.restaurantid + " ==> Updated!")
+        flash("Edit Item: " + item.name + " ==> Updated!")
         # redirect user to updated list of items
         return redirect(url_for('showMenu', restaurant_id = restaurant_id))
     else:
