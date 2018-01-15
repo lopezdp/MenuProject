@@ -2,7 +2,7 @@
     <body>
         <div class="container">
             <div class="header">
-                <h1>New Menu Item</h1>
+                <h1>{{title}}</h1>
             </div>
             <div class="block">
                 {% block content %}
@@ -18,24 +18,25 @@
                                 <input type="text" size="30" name="name">
 
                             <p>Description:</p>
-                                <input type="text" size="30" name="name">
+                                <input type="text" size="30" name="description">
 
                             <p>Price:</p>
-                                <input type="text" size="30" name="name">
+                                <input type="text" size="30" name="price">
 
                             <p>Course:</p>
+                                <input type="radio" id="Appetizer" name= "course" value="Appetizer">
                                 <label for="Appetizer">Appetizer</label>
                                 <br>
 
-                                <input type="radio" id="Entree" name= "Entree" value="Entree">
+                                <input type="radio" id="Entree" name= "course" value="Entree">
                                 <label for="Entree">Entree</label>
                                 <br>
 
-                                <input type="radio" id="Dessert" name= "Dessert" value="Dessert">
+                                <input type="radio" id="Dessert" name= "course" value="Dessert">
                                 <label for="Dessert">Dessert</label>
                                 <br>
 
-                                <input type="radio" id="Beverage" name= "Beverage" value="Beverage">
+                                <input type="radio" id="Beverage" name= "course" value="Beverage">
                                 <label for="Beverage">Beverage</label>
                                 <br>
                                 <br>

@@ -13,9 +13,10 @@
             {% endif %}
 
             <!-- Link to newmenuitem.html -->
-            <a href="#">Create New Item</a>
+            <a href="{{url_for('newMenuItem', restaurant_id=restaurant.id)}}">Create New Item</a>
             <br>
             <br>
+
             <div class="block">
                 {% block content %}
                     <div class="msgs">

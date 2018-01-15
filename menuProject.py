@@ -116,15 +116,37 @@ def showMenu(restaurant_id):
     restaurant = session.query(Restaurant).filter_by(id = restaurant_id).one()
 
     # query db to find items for restaurant
-    items = session.query(MenuItem).filter_by(restaurantid = restaurant_id)
+    items = session.query(MenuItem).filter_by(restaurantid = restaurant_id).order_by(MenuItem.id.asc()).all()
 
     # return "This page is the menu for restaurant %s" % restaurant_id
     return render_template('menu.html', restaurant = restaurant, items = items)
 
-@app.route('/restaurant/<int:restaurant_id>/new/')
+@app.route('/restaurant/<int:restaurant_id>/new/', methods =['GET', 'POST'])
 def newMenuItem(restaurant_id):
-    # return "This page is for making a new menu item for restaurant %s" % restaurant_id
-    return render_template('newMenuItem.html', restaurant_id = restaurant_id)
+
+    # query db to find Restaurant
+    restaurant = session.query(Restaurant).filter_by(id = restaurant_id).one()
+
+    if request.method == 'POST':
+        # Store menuitem input from form into newMenuItem
+        newMenuItem = MenuItem(
+            name = request.form['name'].strip(),
+            course = request.form['course'].strip(),
+            description = request.form['description'].strip(),
+            price = request.form['price'].strip(),
+            restaurantid = restaurant_id
+        )
+        # add newMenuItem to db stage
+        session.add(newMenuItem)
+        # commit newMenuItem to db
+        session.commit()
+
+        # flash message to indicate success
+        flash("New Menu Item: " + newMenuItem.name + " --> Created!")
+        # redirect user to updated list of menuItems for chosen restaurant
+        return redirect(url_for('showMenu', restaurant_id=restaurant_id))
+    else:
+        return render_template('newMenuItem.html', title="New Menu Item Input")
 
 
 

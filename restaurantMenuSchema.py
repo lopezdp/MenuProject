@@ -105,15 +105,15 @@ class MenuItem(Base):
     )
 
     course = Column (
-        String(250)
+        String(80)
     )
 
     description = Column (
-        String(250)
+        String(160)
     )
 
     price = Column (
-        String(8)
+        String(10)
     )
 
     restaurantid = Column (
