@@ -41,7 +41,7 @@
                                 {{i.price}}
                                 <!-- Edit/Delete buttons -->
                                 </br>
-                                <a href='#'> Edit Item</a>
+                                <a href="{{url_for('editMenuItem', restaurant_id=restaurant.id, menu_id=i.id)}}"> Edit Item</a>
                                 </br>
                                 <a href='#'> Delete Item</a>
                                 </br>

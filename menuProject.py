@@ -8,7 +8,7 @@ from sqlalchemy.orm import sessionmaker
 from restaurantMenuSchema import Base, Restaurant, MenuItem
 
 # Create Session and connect to SQLite db
-engine = create_engine('sqlite:///restaurantmenus.db')
+engine = create_engine('sqlite:///restaurantMenus.db')
 # Bind the engine to the metadata of the Base class so that the
 # declaratives can be accessed through a DBSession instance
 Base.metadata.bind = engine
@@ -56,7 +56,7 @@ def newRestaurant():
         session.commit()
 
         # flash message to indicate success
-        flash("New Restaurant: " + newRestaurant.name + " --> Created!")
+        flash("New Restaurant: " + newRestaurant.name + " ==> Created!")
         # redirect user to updated list of restaurants
         return redirect(url_for('showRestaurants'))
     else:
@@ -86,7 +86,7 @@ def editRestaurant(restaurant_id):
         session.commit()
 
         # flash msg to indicate success
-        flash("New Restaurant: " + restaurant.name + " --> Updated!")
+        flash("New Restaurant: " + restaurant.name + " ==> Updated!")
         # redirect user to updated list of restaurants
         return redirect(url_for('showRestaurants'))
     else:
@@ -102,7 +102,7 @@ def deleteRestaurant(restaurant_id):
         session.delete(restaurant)
         # commit delete to db
         session.commit()
-        flash("Former Restaurant: " + restaurant.name + " --> Deleted!")
+        flash("Former Restaurant: " + restaurant.name + " ==> Deleted!")
         # redirect user to updated list of restaurants
         return redirect(url_for('showRestaurants'))
     else:
@@ -142,24 +142,51 @@ def newMenuItem(restaurant_id):
         session.commit()
 
         # flash message to indicate success
-        flash("New Menu Item: " + newMenuItem.name + " --> Created!")
+        flash("New Menu Item: " + newMenuItem.name + " ==> Created!")
         # redirect user to updated list of menuItems for chosen restaurant
-        return redirect(url_for('showMenu', restaurant_id=restaurant_id))
+        return redirect(url_for('showMenu', restaurant_id = restaurant_id))
     else:
-        return render_template('newMenuItem.html', title="New Menu Item Input")
+        return render_template('newMenuItem.html', title = "New Menu Item Input")
 
-
-
-
-
-
-
-@app.route('/restaurant/<int:restaurant_id>/menu/<int:menu_id>/edit/')
+@app.route('/restaurant/<int:restaurant_id>/menu/<int:menu_id>/edit/', methods =['GET', 'POST'])
 def editMenuItem(restaurant_id, menu_id):
-    restaurant = restaurants[restaurant_id]
-    item = items[menu_id]
-    # return "This page is for editing menu item %s" % menu_id
-    return render_template('editMenuItem.html', restaurant = restaurant, item = item)
+    # query db by restaurant_id and menu_id and assign to restaurant and item variables
+    restaurant = session.query(Restaurant).filter_by(id = restaurant_id).one()
+    item = session.query(MenuItem).filter_by(id = menu_id).one()
+
+    if request.method == 'POST':
+        if request.form:
+            # Store edited field data and POST to db
+            item.name = request.form['name'].strip()
+            item.course = request.form['course'].strip()
+            item.description = request.form['description'].strip()
+            item.price = request.form['price'].strip()
+            item.zipCode = request.form['zipCode'].strip()
+            #item.restaurantid = restaurant_id
+
+        # add editMenuItem data to db stage
+        session.add(item)
+        # commit editMenuItem data to db
+        session.commit()
+
+        # flash msg to indicate success
+        flash("New Item: " + item.name + item.restaurantid + " ==> Updated!")
+        # redirect user to updated list of items
+        return redirect(url_for('showMenu', restaurant_id = restaurant_id))
+    else:
+        restaurant = session.query(Restaurant).filter_by(id = restaurant_id).one()
+        return render_template('editMenuItem.html', title = 'Edit Restaurant', restaurant = restaurant, item = item)
+
+
+
+
+
+
+
+
+
+
+
 
 @app.route('/restaurant/<int:restaurant_id>/menu/<int:menu_id>/delete/')
 def deleteMenuItem(restaurant_id, menu_id):
