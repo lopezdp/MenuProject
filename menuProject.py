@@ -184,10 +184,6 @@ def editMenuItem(restaurant_id, menu_id):
 
 
 
-
-
-
-
 @app.route('/restaurant/<int:restaurant_id>/menu/<int:menu_id>/delete/')
 def deleteMenuItem(restaurant_id, menu_id):
     restaurant = restaurants[restaurant_id]
