@@ -1,37 +1,50 @@
 <html>
     <body>
-        <h1>{{title}}</h1>
+    	<div class="container">
+	    	<div class="header">
+	    		<h1>{{title}}</h1>
+	    	</div>
 
+	    	<div class="block">
+	            {% block content %}
+	            	<div class="msgs">
+	                	{% include 'messages.html' %}
+	                </div>
 
-        <form action="#" method="post">
+	                <div class="customform">
+				        <form action="#" method="post">
 
-            <p>Restaurant Name:</p>
-                <input type="text" size="30" name="name" value="{{restaurant.name}}">
-            <p>Street:</p>
-                <input type="text" size="80" name="street" value="{{restaurant.street}}">
-            <p>City:</p>
-                <input type="text" size="80" name="city" value="{{restaurant.city}}">
-            <p>State:</p>
-                <input type="text" size="2" name="state" value="{{restaurant.state}}">
-            <p>Zip Code:</p>
-                <input type=number name="zipCode" value="{{restaurant.zipCode}}">
-            <p>Phone:</p>
-                <input type="text" size="10" name="phone" value="{{restaurant.phone}}">
-            <p>Email:</p>
-                <input type="text" size="50" name="email" value="{{restaurant.email}}">
-            <p>Website:</p>
-                <input type="text" size="50" name="website" value="{{restaurant.website}}">
-            <p>Cuisine:</p>
-                <input type="text" size="80" name="cuisine" value="{{restaurant.cuisine}}">
-            <p>Description:</p>
-                <input type="text" size="160" name="description" value="{{restaurant.description}}">
-            <p>Delivery:</p>
-                <input type="text" size="3" name="delivery" value="{{restaurant.delivery}}">
-            <br>
-            <br>
+				            <p>Restaurant Name:</p>
+				                <input type="text" size="30" name="name" value="{{restaurant.name}}">
+				            <p>Street:</p>
+				                <input type="text" size="80" name="street" value="{{restaurant.street}}">
+				            <p>City:</p>
+				                <input type="text" size="80" name="city" value="{{restaurant.city}}">
+				            <p>State:</p>
+				                <input type="text" size="2" name="state" value="{{restaurant.state}}">
+				            <p>Zip Code:</p>
+				                <input type=number name="zipCode" value="{{restaurant.zipCode}}">
+				            <p>Phone:</p>
+				                <input type="text" size="10" name="phone" value="{{restaurant.phone}}">
+				            <p>Email:</p>
+				                <input type="text" size="50" name="email" value="{{restaurant.email}}">
+				            <p>Website:</p>
+				                <input type="text" size="50" name="website" value="{{restaurant.website}}">
+				            <p>Cuisine:</p>
+				                <input type="text" size="80" name="cuisine" value="{{restaurant.cuisine}}">
+				            <p>Description:</p>
+				                <input type="text" size="160" name="description" value="{{restaurant.description}}">
+				            <p>Delivery:</p>
+				                <input type="text" size="3" name="delivery" value="{{restaurant.delivery}}">
+				            <br>
+				            <br>
 
-            <input type="submit" value="Edit">
-            <a href="#">Cancel</a>
-        </form>
+				            <input type="submit" value="Edit">
+				            <a href="{{url_for('showRestaurants')}}"s>Cancel</a>
+				        </form>
+				    </div>
+			    {% endblock %}
+			</div>
+	    </div>
     </body>
 </html>

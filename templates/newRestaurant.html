@@ -1,34 +1,48 @@
 <html>
     <body>
-        <h1>{{title}}</h1>
+    	<div class="container">
+	    	<div class="header">
+	        	<h1>{{title}}</h1>
+	        </div>
+	        <div class="block">
+	            {% block content %}
+	            	<div class="msgs">
+	                	{% include 'messages.html' %}
+	                </div>
 
-        <form action="{{url_for('newRestaurant')}}" method="post">
+	                <div class="customform">
+				        <form action="{{url_for('newRestaurant')}}" method="post">
 
-            <p>Restaurant Name:</p>
-                <input type="text" size="80" name="name">
-            <p>Street:</p>
-                <input type="text" size="80" name="street">
-            <p>City:</p>
-                <input type="text" size="80" name="city">
-            <p>State:</p>
-                <input type="text" size="2" name="state">
-            <p>Zip Code:</p>
-                <input type=number name="zipCode">
-            <p>Phone:</p>
-                <input type="text" size="10" name="phone">
-            <p>Email:</p>
-                <input type="text" size="50" name="email">
-            <p>Website:</p>
-                <input type="text" size="50" name="website">
-            <p>Cuisine:</p>
-                <input type="text" size="80" name="cuisine">
-            <p>Description:</p>
-                <input type="text" size="160" name="description">
-            <p>Delivery:</p>
-                <input type="text" size="3" name="delivery">
-            <br>
-            <br>
-            <input type="submit" value="Create">
-        </form>
+				            <p>Restaurant Name:</p>
+				                <input type="text" size="80" name="name">
+				            <p>Street:</p>
+				                <input type="text" size="80" name="street">
+				            <p>City:</p>
+				                <input type="text" size="80" name="city">
+				            <p>State:</p>
+				                <input type="text" size="2" name="state">
+				            <p>Zip Code:</p>
+				                <input type=number name="zipCode">
+				            <p>Phone:</p>
+				                <input type="text" size="10" name="phone">
+				            <p>Email:</p>
+				                <input type="text" size="50" name="email">
+				            <p>Website:</p>
+				                <input type="text" size="50" name="website">
+				            <p>Cuisine:</p>
+				                <input type="text" size="80" name="cuisine">
+				            <p>Description:</p>
+				                <input type="text" size="160" name="description">
+				            <p>Delivery:</p>
+				                <input type="text" size="3" name="delivery">
+				            <br>
+				            <br>
+				            <input type="submit" value="Create">
+				            <a href="{{url_for('showRestaurants')}}"s>Cancel</a>
+				        </form>
+				    </div>
+			    {% endblock %}
+			</div>
+	    </div>
     </body>
 </html>

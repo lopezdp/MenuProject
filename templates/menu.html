@@ -3,56 +3,55 @@
         <link rel=stylesheet type=text/css href="{{url_for('static', filename='styles.css')}}">
     </head>
     <body>
-        <div class="pane">
+        <div class="container">
             <div class="header">
                 <h1>{{restaurant.name}}</h1>
             </div>
 
             {% if  not items[0] %}
-                    <p>You currently have no menu items.</p>
+                <p>You currently have no menu items.</p>
             {% endif %}
 
+            <!-- Link to newmenuitem.html -->
             <a href="#">Create New Item</a>
-            </br>
-            </br>
-            <!-- Flashing messages -->
-            {% with messages = get_flashed_messages() %}
-            {% if messages %}
+            <br>
+            <br>
+            <div class="block">
+                {% block content %}
+                    <div class="msgs">
+                        {% include 'messages.html' %}
+                    </div>
 
-            <ul>
-                {% for message in messages %}
-                    <li><strong>{{message}}</strong></li>
-                {% endfor %}
-            </ul>
-            {% endif %}
-            {% endwith %}
+                    <div class="customform">
+                        {% for i in items %}
+                            {% if  i.id == '3'  or items.length == 0 %}
 
+                            {% else %}
+                                <h3>{{i.course}}</h3>
+                            {% endif %}
 
-            {% for i in items %}
-                {% if  i.id == '3'  or items.length == 0 %}
+                            <div>
+                                {{i.name}}
+                                </br>
 
-                {% else %}
-                    <h3>{{i.course}}</h3>
-                {% endif %}
+                                {{i.description}}
+                                </br>
 
-                <div>
-                    {{i.name}}
-                    </br>
+                                {{i.price}}
+                                <!-- Edit/Delete buttons -->
+                                </br>
+                                <a href='#'> Edit Item</a>
+                                </br>
+                                <a href='#'> Delete Item</a>
+                                </br>
+                                </br>
+                            </div>
 
-                    {{i.description}}
-                    </br>
+                        {% endfor %}
+                    </div>
 
-                    {{i.price}}
-                    <!-- Edit/Delete buttons -->
-                    </br>
-                    <a href='#'> Edit Item</a>
-                    </br>
-                    <a href='#'> Delete Item</a>
-                    </br>
-                    </br>
-                </div>
-
-            {% endfor %}
+                {% endblock %}
+            </div>
         </div>
     </body>
 </html>

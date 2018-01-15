@@ -3,33 +3,46 @@
         <link rel=stylesheet type=text/css href="{{url_for('static', filename='styles.css')}}">
     </head>
     <body>
-        <h1>Restaurants</h1>
-
-        {% for i in restaurants %}
-            <div>
-                <p> {{i.name}} </p>
-                <p> {{i.street}} </p>
-                <p> {{i.city}} </p>
-                <p> {{i.state}} </p>
-                <p> {{i.zipCode}} </p>
-                <p> {{i.phone}} </p>
-                <p> {{i.email}} </p>
-                <p> {{i.website}} </p>
-                <p> {{i.cuisine}} </p>
-                <p> {{i.description}} </p>
-                <p> {{i.delivery}} </p>
-
-                <!-- Insert Code here -->
-                <br>
-                <a href="{{url_for('editRestaurant', restaurant_id=i.id)}}"> Edit Restaurant</a>
-                <br>
-                <br>
-                <a href="{{url_for('deleteRestaurant', restaurant_id=i.id)}}"> Delete Restaurant</a>
-
-
-                <br>
-                <br>
+        <div class="container">
+            <div class="header">
+                <h1>{{title}}</h1>
             </div>
-        {% endfor %}
+            <div class="block">
+                {% block content %}
+                    <div class="msgs">
+                        {% include 'messages.html' %}
+                    </div>
+
+                    <div class="customform">
+                        {% for i in restaurants %}
+                            <div>
+                                <p> {{i.name}} </p>
+                                <p> {{i.street}} </p>
+                                <p> {{i.city}} </p>
+                                <p> {{i.state}} </p>
+                                <p> {{i.zipCode}} </p>
+                                <p> {{i.phone}} </p>
+                                <p> {{i.email}} </p>
+                                <p> {{i.website}} </p>
+                                <p> {{i.cuisine}} </p>
+                                <p> {{i.description}} </p>
+                                <p> {{i.delivery}} </p>
+
+                                <!-- Insert Code here -->
+                                <br>
+                                <a href="{{url_for('editRestaurant', restaurant_id=i.id)}}"> Edit Restaurant</a>
+                                <br>
+                                <br>
+                                <a href="{{url_for('deleteRestaurant', restaurant_id=i.id)}}"> Delete Restaurant</a>
+
+
+                                <br>
+                                <br>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endblock %}
+            </div>
+        </div>
     </body>
 </html>

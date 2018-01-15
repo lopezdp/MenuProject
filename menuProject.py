@@ -28,9 +28,9 @@ session = DBSession()
 @app.route('/restaurants/')
 def showRestaurants():
     # query db and assign to restaurants variable
-    restaurants = session.query(Restaurant).order_by('id asc').all()
+    restaurants = session.query(Restaurant).order_by(Restaurant.id.asc()).all()
     # return "This page will show all restaurants"
-    return render_template('restaurants.html', restaurants=restaurants)
+    return render_template('restaurants.html', restaurants=restaurants, title="Restaurants")
 
 @app.route('/restaurant/new/', methods=['GET', 'POST'])
 # Method to create newRestaurant
@@ -56,7 +56,7 @@ def newRestaurant():
         session.commit()
 
         # flash message to indicate success
-        flash("New Restaurant: " + newRestaurant.name + "--> Created!")
+        flash("New Restaurant: " + newRestaurant.name + " --> Created!")
         # redirect user to updated list of restaurants
         return redirect(url_for('showRestaurants'))
     else:
@@ -86,7 +86,7 @@ def editRestaurant(restaurant_id):
         session.commit()
 
         # flash msg to indicate success
-        flash("New Restaurant: " + restaurant.name + "--> Updated!")
+        flash("New Restaurant: " + restaurant.name + " --> Updated!")
         # redirect user to updated list of restaurants
         return redirect(url_for('showRestaurants'))
     else:
@@ -102,7 +102,7 @@ def deleteRestaurant(restaurant_id):
         session.delete(restaurant)
         # commit delete to db
         session.commit()
-        flash("Former Restaurant: " + restaurant.name + "--> Deleted!")
+        flash("Former Restaurant: " + restaurant.name + " --> Deleted!")
         # redirect user to updated list of restaurants
         return redirect(url_for('showRestaurants'))
     else:
@@ -121,15 +121,16 @@ def showMenu(restaurant_id):
     # return "This page is the menu for restaurant %s" % restaurant_id
     return render_template('menu.html', restaurant = restaurant, items = items)
 
-
-
-
-
-
 @app.route('/restaurant/<int:restaurant_id>/new/')
 def newMenuItem(restaurant_id):
     # return "This page is for making a new menu item for restaurant %s" % restaurant_id
     return render_template('newMenuItem.html', restaurant_id = restaurant_id)
+
+
+
+
+
+
 
 @app.route('/restaurant/<int:restaurant_id>/menu/<int:menu_id>/edit/')
 def editMenuItem(restaurant_id, menu_id):
