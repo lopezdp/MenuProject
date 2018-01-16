@@ -27,31 +27,48 @@
                     </div>
 
                     <div class="customform">
-                        {% for i in items %}
-                            {% if  i.id == '3'  or items.length == 0 %}
+                        {% with %}
 
-                            {% else %}
-                                <h3>{{i.course}}</h3>
-                            {% endif %}
+                            {% for i in items %}
+                                <!-- If course changed, then add new course heading -->
+                                {% if loop.changed(i.course) %}
+                                    <h3>{{i.course}}</h3>
 
-                            <div>
-                                {{i.name}}
-                                </br>
+                                {% else %}
+                                <!-- else, add nothing and complete item list -->
 
-                                {{i.description}}
-                                </br>
+                                {% endif %}
 
-                                {{i.price}}
-                                <!-- Edit/Delete buttons -->
-                                </br>
-                                <a href="{{url_for('editMenuItem', restaurant_id=restaurant.id, menu_id=i.id)}}"> Edit Item</a>
-                                </br>
-                                <a href='#'> Delete Item</a>
-                                </br>
-                                </br>
-                            </div>
+                                <div class="item">
+                                    {{i.name}}
+                                    <br>
 
-                        {% endfor %}
+                                    {{i.description}}
+                                    <br>
+
+                                    {{i.price}}
+                                    <!-- Edit/Delete buttons -->
+                                    <br>
+                                    <a href="{{url_for('editMenuItem', restaurant_id=restaurant.id, menu_id=i.id)}}"> Edit Item</a>
+                                    <br>
+                                    <a href='#'> Delete Item</a>
+                                    <br>
+                                    <br>
+                                </div>
+
+
+                            {% endfor %}
+
+
+
+
+
+
+
+
+
+
+                        {% endwith %}
                     </div>
 
                 {% endblock %}
