@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
+from flask import Flask, render_template, request, redirect, url_for, flash, jsonify, make_response
 app = Flask(__name__)
 
 # import CRUD operations
@@ -193,9 +193,48 @@ def deleteMenuItem(restaurant_id, menu_id):
     else:
         return render_template('deleteMenuItem.html', title = 'Confirm Delete Menu Item', restaurant = restaurant, item = item)
 
+# API Endpoints in JSON
+#/restaurants/JSON
+@app.route('/restaurants/JSON')
+def showRestaurantsJSON():
+    # query db for all restaurants to jsonify
+    restaurants = session.query(Restaurant).all()
+    # create json object of list of all Restaurants
+    json = jsonify(Restaurants=[restaurant.serialize for restaurant in restaurants])
+    # create a response object using flask make_response(responseObj, status)
+    res = make_response(json, 200)
+    # Change value of 'Content-Type' header as required
+    res.headers['Content-Type'] = 'application/json'
+    # return the response
+    return res
 
+#/restaurant/restaurant_id/menu/JSON
+@app.route('/restaurant/<int:restaurant_id>/menu/JSON')
+def showMenuJSON(restaurant_id):
+    # query db for all items to jsonify
+    items = session.query(MenuItem).filter_by(restaurantid=restaurant_id)
+    # create json object of list of all items for this restaurant
+    json = jsonify(MenuItems=[item.serialize for item in items])
+    # create a response object using flask make_response(responseObj, status)
+    res = make_response(json, 200)
+    # Change value of 'Content-Type' header as required
+    res.headers['Content-Type'] = 'application/json'
+    # return the response
+    return res
 
-
+#/restaurant/restaurant_id/menu/menu_id/JSON
+@app.route('/restaurant/<int:restaurant_id>/menu/<int:menu_id>/JSON')
+def showItemJSON(restaurant_id, menu_id):
+    # query db for all item to jsonify
+    item = session.query(MenuItem).filter_by(id=menu_id).one()
+    # create json object of single item selected from this restaurant
+    json = jsonify(Item=[item.serialize])
+    # create a response object using flask make_response(responseObj, status)
+    res = make_response(json, 200)
+    # Change value of 'Content-Type' header as required
+    res.headers['Content-Type'] = 'application/json'
+    # return the response
+    return res
 
 
 

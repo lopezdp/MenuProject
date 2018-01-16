@@ -1,5 +1,5 @@
 # Restaurant Menus Web Application
-This is aGrubHub clone application that allows the user to view different restaurant menus and to add, edit, or delete restaurants as needed. There is functionality for the user to add new, edit, and delete menu items from the selected restaurant menus also. The project is built using Python3 to create the _Route Handlers_ in _Flask_.
+This is a GrubHub clone application that allows the user to view different restaurant menus and to add, edit, or delete restaurants as needed. There is functionality for the user to add new, edit, and delete menu items from the selected restaurant menus also. The project is built using Python3 to create the _Route Handlers_ in _Flask_.
 
 ## Installation
 1. Python 3.6.x is needed to run the back end of this Flask application
@@ -16,8 +16,11 @@ This is aGrubHub clone application that allows the user to view different restau
 3. Users can Edit & Delete Menu Items for each Restaurant available in the catalog.
 4. Users can view Menu from Restaurant List
 5. Data Driven Application Using SQLite3
-6. Need to add JSON API Endpoints for showRestaurants & showMenu
-7. Need to Style the page using Jinja templates & CSS
+6. Application provides JSON API Endpoints for the following:
+	* showRestaurants: `/restaurants/JSON`
+	* showMenu: `/restaurant/restaurant_id/menu/JSON`
+	* showItem: `/restaurant/restaurant_id/menu/menu_id/JSON`
+8. Need to Style the page using Jinja templates & CSS
 
 ## License
 The content of this repository is licensed under a [**GNU General Public License v3.0**](https://choosealicense.com/licenses/gpl-3.0)
