@@ -174,14 +174,41 @@ def editMenuItem(restaurant_id, menu_id):
         return redirect(url_for('showMenu', restaurant_id = restaurant_id))
     else:
         restaurant = session.query(Restaurant).filter_by(id = restaurant_id).one()
-        return render_template('editMenuItem.html', title = 'Edit Restaurant', restaurant = restaurant, item = item)
+        return render_template('editMenuItem.html', title = 'Edit Menu Item', restaurant = restaurant, item = item)
 
-@app.route('/restaurant/<int:restaurant_id>/menu/<int:menu_id>/delete/')
+@app.route('/restaurant/<int:restaurant_id>/menu/<int:menu_id>/delete/', methods = ['GET', 'POST'])
 def deleteMenuItem(restaurant_id, menu_id):
-    restaurant = restaurants[restaurant_id]
-    item = items[menu_id]
-    # return "This page is for deleting menu item %s" % menu_id
-    return render_template('deleteMenuItem.html', restaurant = restaurant, item = item)
+    # query db by restaurant_id and menu_id and assign to restaurant and item variables
+    restaurant = session.query(Restaurant).filter_by(id=restaurant_id).one()
+    item = session.query(MenuItem).filter_by(id = menu_id).one()
+
+    if request.method == 'POST':
+        # delete restaurant object obtained from db query
+        session.delete(item)
+        # commit delete to db
+        session.commit()
+        flash("Deleted item: " + item.name + " ==> Deleted!")
+        # redirect user to updated list of restaurants
+        return redirect(url_for('showMenu', restaurant_id = restaurant_id))
+    else:
+        return render_template('deleteMenuItem.html', title = 'Confirm Delete Menu Item', restaurant = restaurant, item = item)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -13,11 +13,11 @@ This is aGrubHub clone application that allows the user to view different restau
 ## Issues, Current, & Future Functionality
 1. Users can Add New, Edit, & Delete Restaurants
 2. Users can Add New Menu Items for each Restaurant available in the catalog.
-3. Users can Edit Menu Items for each Restaurant available in the catalog.
+3. Users can Edit & Delete Menu Items for each Restaurant available in the catalog.
 4. Users can view Menu from Restaurant List
-5. Need to Complete Delete Menu Item functionality
-6. Working on completing CRUD operations using SQLAlchemy
-7. Need to add JSON API Endpoints for showRestaurants & showMenu
+5. Data Driven Application Using SQLite3
+6. Need to add JSON API Endpoints for showRestaurants & showMenu
+7. Need to Style the page using Jinja templates & CSS
 
 ## License
 The content of this repository is licensed under a [**GNU General Public License v3.0**](https://choosealicense.com/licenses/gpl-3.0)
