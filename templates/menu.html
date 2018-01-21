@@ -3,16 +3,17 @@
         <link rel=stylesheet type=text/css href="{{url_for('static', filename='styles.css')}}">
     </head>
     <body>
-        <div class="container">
-            <div class="header">
+        <div class="flex-container">
+            <header>
                 <h1>{{restaurant.name}}</h1>
-            </div>
+            </header>
 
             {% if  not items[0] %}
                 <p>You currently have no menu items.</p>
             {% endif %}
 
             <!-- Link to newmenuitem.html -->
+
             <a href="{{url_for('newMenuItem', restaurant_id=restaurant.id)}}">Create New Item</a>
             <br>
             <br>
