@@ -1,11 +1,17 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify, make_response
-app = Flask(__name__)
 
 # import CRUD operations
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 # Need to figure out what my db_setup file is: restaurantMenuSchema.py
 from restaurantMenuSchema import Base, Restaurant, MenuItem
+
+# New Imports for Google Oauth Login functionality
+from flask import session as login_session
+import random
+import string
+
+app = Flask(__name__)
 
 # Create Session and connect to SQLite db
 engine = create_engine('sqlite:///restaurantMenus.db')
@@ -22,6 +28,14 @@ DBSession = sessionmaker(bind=engine)
 # revert all of them back to the last commit by calling
 # session.rollback()
 session = DBSession()
+
+# Create anti-forgery state token
+@app.route('/login')
+def showLogin():
+    state = ''.join(random.choice(string.ascii_uppercase + string.digits)
+        for x in range(32))
+    login_session['state'] = state
+    return "The current session state is %s" % login_session['state']
 
 # Building API Endpoints/Route Handlers (GET Request)
 @app.route('/')

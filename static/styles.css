@@ -26,19 +26,23 @@ nav {
 	box-sizing: border-box;
 	display: flex;
 	flex-flow: row wrap;
-	justify-content: space-between;
+	justify-content: center;
 	font-family: Helvetica, Verdana, sans-serif;
 }
 
 .item-window {
 	order: 3;
-	flex: 0 1 325px;
+	flex: 0 1 360px;
 	background-color: #EBEDF0;
 	border-style: solid;
 	border-width: 0.5em;
 	border-radius: 1em;/*15px;*/
 	border-color: #FAFAFA;
 
+}
+
+.item-window:hover {
+	border-color: #EBEDF0;
 }
 
 .button {
