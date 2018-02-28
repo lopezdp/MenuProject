@@ -32,7 +32,7 @@
             function signInCallback(authResult){
                 if(authResult['code']){
                     // Hide the sign in button now that the user has been authorized
-                    $('loginButton').attr('style', 'display: none');
+                    $('#loginButton').attr('style', 'display: none');
                     // Send the one-time-use code to the server, if the server
                     // responds, write a 'login successful' message to the page
                     // and then redirect back to the main restaurants page
@@ -40,11 +40,11 @@
                         type: 'POST',
                         url: '/gconnect?state={{STATE}}',
                         processData: false,
-                        contentType: 'application/octet-stream; charset=utf-8',
                         data: authResult['code'],
-                        success: function(){
+                        contentType: 'application/octet-stream; charset=utf-8',
+                        success: function(result){
                             if(result){
-                                $('#result').html('Login Successful!</br>' + result + '</br>Redirecting...')
+                                $('#result').html('Login Successful!</br>' + result + '</br>Redirecting...');
                                 setTimeout(function(){
                                     window.location.href = "/restaurants";
                                 }, 4000);
@@ -54,6 +54,9 @@
                                 $('#result').html('Failed to make a server-side call. \n' +
                                     'Check your configuration and console');
                             }
+                        },
+                        error: function(jqXHR, error){
+                            console.log('Uncaught Error.\n' + jqXHR.responseText);
                         }
                     })
                 }

@@ -20,6 +20,7 @@ import requests
 
 CLIENT_ID = json.loads(
     open('client_secrets.json','r').read())['web']['client_id']
+APPLICATION_NAME = "Restaurant Menu Application"
 
 app = Flask(__name__)
 
@@ -52,16 +53,21 @@ def showLogin():
 # Route handler to accept client-side calls from signInCallBack()
 @app.route('/gconnect', methods = ['POST'])
 def gconnect():
+    # Validate state token
     if request.args.get('state') != login_session['state']:
+        # if state tokens do not match then return 401
         response = make_response(json.dumps('Invalid state parameter'), 401)
         response.headers['Content-Type'] = 'application/json'
         return response
+    # save request data in code variable
     code = request.data
     try:
         #Upgrade the auth code into a credentials object
-        oath_flow = flow_from_clientsecrets('client_secrets.json', scope = '')
-        oath_flow.redirect_uri = 'postmessage'
-        credentials = oath_flow.step2_exchange(code)
+        oauth_flow = flow_from_clientsecrets('client_secrets.json', scope = '')
+        oauth_flow.redirect_uri = 'postmessage'
+        # credentials variable holds the request data
+        credentials = oauth_flow.step2_exchange(code)
+
     except FlowExchangeError:
         response = make_response(json.dumps('Failed to upgrade the authorization code'), 401)
         response.headers['Content-Type'] = 'application/json'
@@ -69,7 +75,8 @@ def gconnect():
 
     # Check to be sure the access token is valid
     access_token = credentials.access_token
-    url = ("https://www.googleapis.com/oath2/v1/tokeninfo?access_token=%s" % access_token)
+
+    url = ("https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=%s" % access_token)
     h = httplib2.Http()
     result = json.loads(h.request(url, 'GET')[1])
 
@@ -77,6 +84,8 @@ def gconnect():
     if result.get('error') is not None:
         response = make_response(json.dumps(result.get('error')), 500)
         response.headers['Content-Type'] = 'application/json'
+        # Debug
+        print("500 error print: " + result)
         return response
 
 
@@ -84,7 +93,13 @@ def gconnect():
     gplus_id = credentials.id_token['sub']
     if result['user_id'] != gplus_id:
         response = make_response(json.dumps('Token client ID does not match user ID'), 401)
-        print("Token client ID does not match app.")
+        response.headers['Content-Type'] = 'application/json'
+        return response
+
+    # Verify that the access token is good for this app.
+    if result['issued_to'] != CLIENT_ID:
+        response = make_response(
+            json.dumps("Token's client ID does not match app's."), 401)
         response.headers['Content-Type'] = 'application/json'
         return response
 
@@ -97,14 +112,14 @@ def gconnect():
         return response
 
     # Save the access_token for later use dude
-    login_session['credentials'] = credentials
+    login_session['credentials'] = credentials.access_token
     login_session['gplus_id'] = gplus_id
 
     # Get user info
     userinfo_url = "https://www.googleapis.com/oauth2/v1/userinfo"
     params = {'access_token': credentials.access_token, 'alt': 'json'}
     answer = requests.get(userinfo_url, params=params)
-    data = json.loads(answer.text)
+    data = answer.json()
 
     login_session['username'] = data['name']
     login_session['picture'] = data['picture']
@@ -118,7 +133,7 @@ def gconnect():
     output += login_session['picture']
     output += ' " style = "width: 300px; height: 300px;border-radius: 150px;-webkit-border-radius: 150px;-moz-border-radius: 150px;"> '
     flash("you are now logged in as %s" % login_session['username'])
-
+    print("Done!")
     return output
 
 
