@@ -18,6 +18,7 @@ import httplib2
 import json
 import requests
 
+# Read & store the client_id from the client_secrets.json file
 CLIENT_ID = json.loads(
     open('client_secrets.json','r').read())['web']['client_id']
 APPLICATION_NAME = "Restaurant Menu Application"
@@ -59,8 +60,10 @@ def gconnect():
         response = make_response(json.dumps('Invalid state parameter'), 401)
         response.headers['Content-Type'] = 'application/json'
         return response
+
     # save request data in code variable
     code = request.data
+
     try:
         #Upgrade the auth code into a credentials object
         oauth_flow = flow_from_clientsecrets('client_secrets.json', scope = '')
@@ -87,7 +90,6 @@ def gconnect():
         # Debug
         print("500 error print: " + result)
         return response
-
 
     # Ensure that the access_token is used by the intended person
     gplus_id = credentials.id_token['sub']
@@ -121,10 +123,12 @@ def gconnect():
     answer = requests.get(userinfo_url, params=params)
     data = answer.json()
 
+    # Store data params into login_session params
     login_session['username'] = data['name']
     login_session['picture'] = data['picture']
     login_session['email'] = data['email']
 
+    # Format output
     output = ''
     output += '<h1>Welcome, '
     output += login_session['username']
@@ -132,14 +136,11 @@ def gconnect():
     output += '<img src="'
     output += login_session['picture']
     output += ' " style = "width: 300px; height: 300px;border-radius: 150px;-webkit-border-radius: 150px;-moz-border-radius: 150px;"> '
-    flash("you are now logged in as %s" % login_session['username'])
+    flash("You are now logged in as %s" % login_session['username'])
     print("Done!")
+
+    # Return output
     return output
-
-
-
-
-
 
 # Building API Endpoints/Route Handlers (GET Request)
 @app.route('/')
