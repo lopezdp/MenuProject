@@ -114,7 +114,7 @@ def gconnect():
         return response
 
     # Save the access_token for later use dude
-    login_session['credentials'] = credentials.access_token
+    login_session['access_token'] = credentials.access_token
     login_session['gplus_id'] = gplus_id
 
     # Get user info
@@ -148,6 +148,8 @@ def gconnect():
 def gdisconnect():
     # Only disconnect a connected user
     access_token = login_session.get('access_token')
+    print("This is the access token: " + str(access_token))
+
     if access_token is None:
         response = make_response(json.dumps('Current user not connected.'), 401)
         response.headers['Content-Type'] = 'application/json'
@@ -161,7 +163,7 @@ def gdisconnect():
 
     if result['status'] == '200':
         # Reset the user's session
-        del login_session['credentials']
+        del login_session['access_token']
         del login_session['gplus_id']
         del login_session['username']
         del login_session['email']
