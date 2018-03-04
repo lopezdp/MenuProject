@@ -3,8 +3,9 @@ from flask import Flask, render_template, request, redirect, url_for, flash, jso
 # import CRUD operations
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-# Need to figure out what my db_setup file is: restaurantMenuSchema.py
-from restaurantMenuSchema import Base, Restaurant, MenuItem
+
+# This imports the data model designed in the schema: restaurantMenuSchema.py
+from restaurantMenuSchema import Base, Restaurant, MenuItem, User
 
 # New Imports for Google Oauth Login functionality
 from flask import session as login_session
@@ -208,7 +209,8 @@ def newRestaurant():
             website = request.form['website'].strip(),
             cuisine = request.form['cuisine'].strip(),
             description = request.form['description'].strip(),
-            delivery = request.form['delivery'].strip()
+            delivery = request.form['delivery'].strip(),
+            user_id = login_session['user_id']
         )
         # add newRestaurant item to db stage
         session.add(newRestaurant)
@@ -308,7 +310,8 @@ def newMenuItem(restaurant_id):
             course = request.form['course'].strip(),
             description = request.form['description'].strip(),
             price = request.form['price'].strip(),
-            restaurantid = restaurant_id
+            restaurantid = restaurant_id,
+            user_id = restaurant.user_id
         )
         # add newMenuItem to db stage
         session.add(newMenuItem)
@@ -420,8 +423,29 @@ def showItemJSON(restaurant_id, menu_id):
     # return the response
     return res
 
+def createUser(login_session):
+    # Populate user info from current login_session
+    newUser = User(name = login_session['username'], email = login_session['email'],
+        picture = login_session['picture'])
+    # Add/commit user info to db
+    session.add(newUser)
+    session.commit()
+    user = session.query(User).filter_by(email = login_session['email']).one()
+    return user.id
 
+def getUserInfo(user_id):
+    # user_id returns user object associated with id
+    user = session.query(User).filter_by(id = user_id).one()
+    return user
 
+def getUserId(email);
+    # Use email input to return an id number of a user
+    # If email does not belong to a user in db, return none
+    try:
+        user = session.query(User).filter_by(email = email).one()
+        return user.id
+    except:
+        return None
 
 if __name__ == '__main__':
     app.secret_key = 'super_secret_key'

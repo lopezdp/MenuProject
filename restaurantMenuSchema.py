@@ -11,6 +11,36 @@ from sqlalchemy import create_engine
 Base = declarative_base()
 
 # Representation of sql tables as a Python class
+
+# User schema and tables
+class User(base):
+
+    # Tables
+    __tablename__ = 'users'
+
+    # Mapper: Maps Python Objects to
+    # columns in our database
+    id = Column (
+        Integer,
+        primary_key = True
+    )
+
+    name = Column(
+        String(250),
+        nullable=False
+    )
+
+    email = Column(
+        String(250),
+        nullable=False
+    )
+
+    picture = Column(
+        String(250)
+    )
+
+
+# Restaurant schema and tables
 class Restaurant(Base):
 
     # Tables
@@ -69,6 +99,14 @@ class Restaurant(Base):
     	String(3)
     )
 
+    # This column maps the restaurant to its owner
+    user_id = Column(
+        Integer,
+        ForeignKey('user.id')
+    )
+
+    user = relationship(User)
+
     @property
     def serialize(self):
         return {
@@ -86,6 +124,7 @@ class Restaurant(Base):
             'delivery' : self.delivery
         }
 
+# MenuItem schema and tables
 class MenuItem(Base):
 
     # Tables
@@ -116,12 +155,21 @@ class MenuItem(Base):
         String(10)
     )
 
+    # This column maps the menuItem to its restaurant
     restaurantid = Column (
         Integer,
         ForeignKey('restaurant.id')
     )
 
     restaurant = relationship(Restaurant)
+
+    # This column maps the menuItem to its restaurant owner
+    user_id = Column(
+        Integer,
+        ForeignKey('user.id')
+    )
+
+    user = relationship(User)
 
     @property
     def serialize(self):
