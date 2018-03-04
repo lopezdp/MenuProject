@@ -13,7 +13,7 @@ Base = declarative_base()
 # Representation of sql tables as a Python class
 
 # User schema and tables
-class User(base):
+class User(Base):
 
     # Tables
     __tablename__ = 'users'

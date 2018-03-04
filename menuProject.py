@@ -130,6 +130,13 @@ def gconnect():
     login_session['picture'] = data['picture']
     login_session['email'] = data['email']
 
+    # See if user exists, if not then make one
+    user_id = getUserId(login_session['email'])
+    if not user_id:
+        user_id = createUser(login_session)
+    login_session['user_id'] = user_id
+
+
     # Format output
     output = ''
     output += '<h1>Welcome, '
@@ -438,7 +445,7 @@ def getUserInfo(user_id):
     user = session.query(User).filter_by(id = user_id).one()
     return user
 
-def getUserId(email);
+def getUserId(email):
     # Use email input to return an id number of a user
     # If email does not belong to a user in db, return none
     try:
