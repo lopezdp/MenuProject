@@ -178,8 +178,6 @@ def gdisconnect():
         response.headers['Content-Type'] = 'application/json'
         return response
 
-
-
 # Building API Endpoints/Route Handlers (GET Request)
 @app.route('/')
 @app.route('/restaurants/')
@@ -192,6 +190,11 @@ def showRestaurants():
 @app.route('/restaurant/new/', methods = ['GET', 'POST'])
 # Method to create newRestaurant
 def newRestaurant():
+    # Check to see if a user is logged in.
+    if 'username' not in login_session:
+        return redirect('/login')
+
+    # If user is logged in then access newRestaurant page
     if request.method == 'POST':
         # Store restaurant input from form into newRestaurant
         newRestaurant = Restaurant(
@@ -221,6 +224,11 @@ def newRestaurant():
 
 @app.route('/restaurant/<int:restaurant_id>/edit/', methods = ['GET', 'POST'])
 def editRestaurant(restaurant_id):
+    # Check to see if a user is logged in.
+    if 'username' not in login_session:
+        return redirect('/login')
+
+    # If user is logged in then access editRestaurant page
     # query db by restaurant_id and assign to restaurant variable
     restaurant = session.query(Restaurant).filter_by(id = restaurant_id).one()
     if request.method == 'POST':
@@ -252,6 +260,11 @@ def editRestaurant(restaurant_id):
 
 @app.route('/restaurant/<int:restaurant_id>/delete/', methods = ['GET', 'POST'])
 def deleteRestaurant(restaurant_id):
+    # Check to see if a user is logged in.
+    if 'username' not in login_session:
+        return redirect('/login')
+
+    # If user is logged in then access deleteRestaurant page
     # query db by restaurant_id and assign to restaurant variable
     restaurant = session.query(Restaurant).filter_by(id=restaurant_id).one()
     if request.method == 'POST':
@@ -280,7 +293,11 @@ def showMenu(restaurant_id):
 
 @app.route('/restaurant/<int:restaurant_id>/new/', methods = ['GET', 'POST'])
 def newMenuItem(restaurant_id):
+    # Check to see if a user is logged in.
+    if 'username' not in login_session:
+        return redirect('/login')
 
+    # If user is logged in then access newMenuItem page
     # query db to find Restaurant
     restaurant = session.query(Restaurant).filter_by(id = restaurant_id).one()
 
@@ -307,6 +324,11 @@ def newMenuItem(restaurant_id):
 
 @app.route('/restaurant/<int:restaurant_id>/menu/<int:menu_id>/edit/', methods = ['GET', 'POST'])
 def editMenuItem(restaurant_id, menu_id):
+    # Check to see if a user is logged in.
+    if 'username' not in login_session:
+        return redirect('/login')
+
+    # If user is logged in then access editMenuItem page
     # query db by restaurant_id and menu_id and assign to restaurant and item variables
     restaurant = session.query(Restaurant).filter_by(id = restaurant_id).one()
     item = session.query(MenuItem).filter_by(id = menu_id).one()
@@ -335,6 +357,11 @@ def editMenuItem(restaurant_id, menu_id):
 
 @app.route('/restaurant/<int:restaurant_id>/menu/<int:menu_id>/delete/', methods = ['GET', 'POST'])
 def deleteMenuItem(restaurant_id, menu_id):
+    # Check to see if a user is logged in.
+    if 'username' not in login_session:
+        return redirect('/login')
+
+    # If user is logged in then access deleteMenuItem page
     # query db by restaurant_id and menu_id and assign to restaurant and item variables
     restaurant = session.query(Restaurant).filter_by(id=restaurant_id).one()
     item = session.query(MenuItem).filter_by(id = menu_id).one()
@@ -392,26 +419,6 @@ def showItemJSON(restaurant_id, menu_id):
     res.headers['Content-Type'] = 'application/json'
     # return the response
     return res
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
