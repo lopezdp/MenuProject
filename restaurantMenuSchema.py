@@ -102,7 +102,7 @@ class Restaurant(Base):
     # This column maps the restaurant to its owner
     user_id = Column(
         Integer,
-        ForeignKey('user.id')
+        ForeignKey('users.id')
     )
 
     user = relationship(User)
@@ -166,7 +166,7 @@ class MenuItem(Base):
     # This column maps the menuItem to its restaurant owner
     user_id = Column(
         Integer,
-        ForeignKey('user.id')
+        ForeignKey('users.id')
     )
 
     user = relationship(User)
@@ -175,11 +175,11 @@ class MenuItem(Base):
     def serialize(self):
         # Returns object data in serialized format
         return {
-            'name' : self.name,
-            'description' : self.description,
             'id' : self.id,
+            'name' : self.name,
+            'course' : self.course,
+            'description' : self.description,
             'price' : self.price,
-            'course' : self.course
         }
 
 # Insert at EOF

@@ -1,3 +1,9 @@
+'''
+    David P. Lopez
+    Menu Project
+
+'''
+
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify, make_response
 
 # import CRUD operations
@@ -43,6 +49,7 @@ DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
 # Create anti-forgery state token
+#################################
 @app.route('/login')
 def showLogin():
     state = ''.join(random.choice(string.ascii_uppercase + string.digits)
@@ -53,6 +60,7 @@ def showLogin():
     return render_template('login.html', STATE=state)
 
 # Route handler to accept client-side calls from signInCallBack()
+#################################################################
 @app.route('/gconnect', methods = ['POST'])
 def gconnect():
     # Validate state token
@@ -130,12 +138,11 @@ def gconnect():
     login_session['picture'] = data['picture']
     login_session['email'] = data['email']
 
-    # See if user exists, if not then make one
+    # Check for user in db, if not then INSERT
     user_id = getUserId(login_session['email'])
     if not user_id:
         user_id = createUser(login_session)
     login_session['user_id'] = user_id
-
 
     # Format output
     output = ''
@@ -151,7 +158,9 @@ def gconnect():
     # Return output
     return output
 
+
 # DISCONNECT - Revoke a user's token and reset their login session
+##################################################################
 @app.route("/gdisconnect")
 def gdisconnect():
     # Only disconnect a connected user
@@ -186,15 +195,25 @@ def gdisconnect():
         response.headers['Content-Type'] = 'application/json'
         return response
 
-# Building API Endpoints/Route Handlers (GET Request)
+# Building Endpoints/Route Handlers "Local Routing" (GET Request)
+#################################################################
 @app.route('/')
 @app.route('/restaurants/')
 def showRestaurants():
     # query db and assign to restaurants variable
     restaurants = session.query(Restaurant).order_by(Restaurant.id.asc()).all()
-    # return "This page will show all restaurants"
-    return render_template('restaurants.html', restaurants = restaurants, title = "Restaurants")
 
+    # Check if user credential match data in login_session
+    # Check if username data in login_session
+    if 'username' not in login_session:
+        # This page will redirect user to Google login page
+        return render_template('publicRestaurants.html', restaurants = restaurants, title = "Restaurants")
+    else:
+        # return "This page will show all restaurants"
+        return render_template('restaurants.html', restaurants = restaurants, title = "Restaurants")
+
+# Create a New Restaurant
+#########################
 @app.route('/restaurant/new/', methods = ['GET', 'POST'])
 # Method to create newRestaurant
 def newRestaurant():
@@ -387,7 +406,7 @@ def deleteMenuItem(restaurant_id, menu_id):
     else:
         return render_template('deleteMenuItem.html', title = 'Confirm Delete Menu Item', restaurant = restaurant, item = item)
 
-# API Endpoints in JSON
+# EXPOSE API Endpoints in JSON
 #/restaurants/JSON
 @app.route('/restaurants/JSON')
 def showRestaurantsJSON():
@@ -430,10 +449,16 @@ def showItemJSON(restaurant_id, menu_id):
     # return the response
     return res
 
+
+# USER Helper Methods
+
 def createUser(login_session):
+
     # Populate user info from current login_session
-    newUser = User(name = login_session['username'], email = login_session['email'],
+    newUser = User(name = login_session['username'],
+        email = login_session['email'],
         picture = login_session['picture'])
+
     # Add/commit user info to db
     session.add(newUser)
     session.commit()
@@ -441,11 +466,13 @@ def createUser(login_session):
     return user.id
 
 def getUserInfo(user_id):
+
     # user_id returns user object associated with id
     user = session.query(User).filter_by(id = user_id).one()
     return user
 
 def getUserId(email):
+
     # Use email input to return an id number of a user
     # If email does not belong to a user in db, return none
     try:

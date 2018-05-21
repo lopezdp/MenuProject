@@ -1,0 +1,55 @@
+<html>
+    <head>
+        <link rel=stylesheet type=text/css href="{{url_for('static', filename='styles.css')}}">
+    </head>
+    <body>
+        <div class="flex-container">
+            <header>
+                <h1>{{title}}</h1>
+            </header>
+
+            <nav class="btns">
+                <!-- Link to newRestaurant.html -->
+                <a class="button" href="{{url_for('showRestaurants')}}">Show All Restaurants</a>
+                <br>
+                <br>
+            </nav>
+
+            <section class="msgs">
+                {% include 'messages.html' %}
+            </section>
+
+            {% for i in restaurants %}
+                <section class="item-window">
+                    <p> {{i.name}} </p>
+                    <p> {{i.street}} </p>
+                    <p> {{i.city}} </p>
+                    <p> {{i.state}} </p>
+                    <p> {{i.zipCode}} </p>
+                    <p> {{i.phone}} </p>
+                    <p> {{i.email}} </p>
+                    <p> {{i.website}} </p>
+                    <p> {{i.cuisine}} </p>
+                    <p> {{i.description}} </p>
+                    <p> {{i.delivery}} </p>
+
+                    <!-- Show Menu functionality -->
+                    <br>
+                    <a href="{{url_for('showMenu', restaurant_id=i.id)}}">Show Menu</a>
+                    <br>
+
+                    <!-- Edit Delete functionality
+                    <br>
+                    <a href="{{url_for('editRestaurant', restaurant_id=i.id)}}"> Edit Restaurant</a>
+                    <br>
+                    <br>
+                    <a href="{{url_for('deleteRestaurant', restaurant_id=i.id)}}"> Delete Restaurant</a>
+                    -->
+
+                    <br>
+                    <br>
+                </section>
+            {% endfor %}
+        </div>
+    </body>
+</html>
