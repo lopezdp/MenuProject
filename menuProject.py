@@ -264,13 +264,7 @@ def editRestaurant(restaurant_id):
 
     # Check if user_id matches the user_id stored in login_session
     if restaurant.user_id != login_session['user_id']:
-        return "<script>function authorizationAlert() {" +
-                            "alert(\'You are not authorized to edit this restaurant! " +
-                                "Please create your own restaurant in order to edit.\'" +
-                            ");" +
-                        "}" +
-                "</script>" +
-            "<body onload=\'authorizationAlert()\'>"
+        return alertFunction("Edit")
 
     # If user is logged in then access editRestaurant page
     if request.method == 'POST':
@@ -314,13 +308,7 @@ def deleteRestaurant(restaurant_id):
 
     # Check if user_id matches the user_id stored in login_session
     if restaurant.user_id != login_session['user_id']:
-        return "<script>function authorizationAlert() {" +
-                            "alert(\'You are not authorized to Delete this restaurant! " +
-                                "Please create your own restaurant in order to delete.\'" +
-                            ");" +
-                        "}" +
-                "</script>" +
-            "<body onload=\'authorizationAlert()\'>"
+        return alertFunction("Delete")
 
     # If user is logged in then access deleteRestaurant page
     if request.method == 'POST':
@@ -509,6 +497,19 @@ def getUserId(email):
         return user.id
     except:
         return None
+
+
+def alertFunction(event):
+
+    script =  "<script>function authorizationAlert() {"
+    script +=                "alert(\'You are not authorized to " + event + " this restaurant! "
+    script +=                    "Please create your own restaurant in order to " + event + ".\'"
+    script +=                ");"
+    script +=            "}"
+    script +=    "</script>"
+    script += "<body onload=\'authorizationAlert()\'>"
+
+    return script
 
 if __name__ == '__main__':
     app.secret_key = 'super_secret_key'
