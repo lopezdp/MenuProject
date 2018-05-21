@@ -250,15 +250,29 @@ def newRestaurant():
     else:
         return render_template('newRestaurant.html', title = "New Restaurant Input")
 
+# Edit a Restaurant
+#########################
 @app.route('/restaurant/<int:restaurant_id>/edit/', methods = ['GET', 'POST'])
 def editRestaurant(restaurant_id):
+
+    # query db by restaurant_id and assign to restaurant variable
+    restaurant = session.query(Restaurant).filter_by(id = restaurant_id).one()
+
     # Check to see if a user is logged in.
     if 'username' not in login_session:
         return redirect('/login')
 
+    # Check if user_id matches the user_id stored in login_session
+    if restaurant.user_id != login_session['user_id']:
+        return "<script>function authorizationAlert() {" +
+                            "alert(\'You are not authorized to edit this restaurant! " +
+                                "Please create your own restaurant in order to edit.\'" +
+                            ");" +
+                        "}" +
+                "</script>" +
+            "<body onload=\'authorizationAlert()\'>"
+
     # If user is logged in then access editRestaurant page
-    # query db by restaurant_id and assign to restaurant variable
-    restaurant = session.query(Restaurant).filter_by(id = restaurant_id).one()
     if request.method == 'POST':
         if request.form:
             # Store edited field data and POST to db
@@ -283,18 +297,32 @@ def editRestaurant(restaurant_id):
         # redirect user to updated list of restaurants
         return redirect(url_for('showRestaurants'))
     else:
-        restaurant = session.query(Restaurant).filter_by(id = restaurant_id).one()
+        # Render the html needed to edit the restaurant.
         return render_template('editRestaurant.html', title = 'Edit Restaurant', restaurant = restaurant)
 
+# Delete a Restaurant
+#########################
 @app.route('/restaurant/<int:restaurant_id>/delete/', methods = ['GET', 'POST'])
 def deleteRestaurant(restaurant_id):
+
+    # query db by restaurant_id and assign to restaurant variable
+    restaurant = session.query(Restaurant).filter_by(id=restaurant_id).one()
+
     # Check to see if a user is logged in.
     if 'username' not in login_session:
         return redirect('/login')
 
+    # Check if user_id matches the user_id stored in login_session
+    if restaurant.user_id != login_session['user_id']:
+        return "<script>function authorizationAlert() {" +
+                            "alert(\'You are not authorized to Delete this restaurant! " +
+                                "Please create your own restaurant in order to delete.\'" +
+                            ");" +
+                        "}" +
+                "</script>" +
+            "<body onload=\'authorizationAlert()\'>"
+
     # If user is logged in then access deleteRestaurant page
-    # query db by restaurant_id and assign to restaurant variable
-    restaurant = session.query(Restaurant).filter_by(id=restaurant_id).one()
     if request.method == 'POST':
         # delete restaurant object obtained from db query
         session.delete(restaurant)
@@ -304,6 +332,7 @@ def deleteRestaurant(restaurant_id):
         # redirect user to updated list of restaurants
         return redirect(url_for('showRestaurants'))
     else:
+        # Render the html needed to edit the restaurant.
         return render_template('deleteRestaurant.html', title = 'Confirm Delete Restaurant', restaurant = restaurant)
 
 @app.route('/restaurant/<int:restaurant_id>/menu/')
