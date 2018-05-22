@@ -354,6 +354,10 @@ def newMenuItem(restaurant_id):
     # query db to find Restaurant
     restaurant = session.query(Restaurant).filter_by(id = restaurant_id).one()
 
+    # Check if user_id matches the user_id stored in login_session
+    if restaurant.user_id != login_session['user_id']:
+        return authorizationAlert("Add")
+
     if request.method == 'POST':
         # Store menuitem input from form into newMenuItem
         newMenuItem = MenuItem(
@@ -510,7 +514,7 @@ def getUserId(email):
 def authorizationAlert(event):
 
     script =  "<script>function authorizationAlert() {"
-    script +=                "alert(\'You are not authorized to " + event + " this restaurant! "
+    script +=                "alert(\'You are not authorized to " + event + " this record! "
     script +=                    "Please create your own restaurant in order to " + event + ".\'"
     script +=                ");"
     script +=            "}"
