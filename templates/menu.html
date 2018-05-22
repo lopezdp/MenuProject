@@ -8,6 +8,12 @@
                 <h1>{{restaurant.name}}</h1>
             </header>
 
+            <aside>
+                {{creator.picture}}
+
+                {{creator.name}}
+            </aside>
+
             {% if  not items[0] %}
                 <p>You currently have no menu items.</p>
             {% endif %}
