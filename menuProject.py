@@ -264,7 +264,7 @@ def editRestaurant(restaurant_id):
 
     # Check if user_id matches the user_id stored in login_session
     if restaurant.user_id != login_session['user_id']:
-        return alertFunction("Edit")
+        return authorizationAlert("Edit")
 
     # If user is logged in then access editRestaurant page
     if request.method == 'POST':
@@ -308,7 +308,7 @@ def deleteRestaurant(restaurant_id):
 
     # Check if user_id matches the user_id stored in login_session
     if restaurant.user_id != login_session['user_id']:
-        return alertFunction("Delete")
+        return authorizationAlert("Delete")
 
     # If user is logged in then access deleteRestaurant page
     if request.method == 'POST':
@@ -323,6 +323,8 @@ def deleteRestaurant(restaurant_id):
         # Render the html needed to edit the restaurant.
         return render_template('deleteRestaurant.html', title = 'Confirm Delete Restaurant', restaurant = restaurant)
 
+# Show Menu
+#########################
 @app.route('/restaurant/<int:restaurant_id>/menu/')
 @app.route('/restaurant/<int:restaurant_id>/')
 def showMenu(restaurant_id):
@@ -330,11 +332,17 @@ def showMenu(restaurant_id):
     # query db to find Restaurant
     restaurant = session.query(Restaurant).filter_by(id = restaurant_id).one()
 
+    # getUserInfo()
+    creator = getUserInfo(restaurant.user_id)
+
     # query db to find items for restaurant
     items = session.query(MenuItem).filter_by(restaurantid = restaurant_id).order_by(MenuItem.id.asc()).all()
 
-    # return "This page is the menu for restaurant %s" % restaurant_id
-    return render_template('menu.html', restaurant = restaurant, items = items)
+    if 'username' not in login_session or creator.id != login_session['user_id']:
+        return render_template('publicMenu.html', items=items, restaurant=restaurant, creator=creator)
+    else:
+        # return "This page is the menu for restaurant %s" % restaurant_id
+        return render_template('menu.html', restaurant = restaurant, items = items, creator=creator)
 
 @app.route('/restaurant/<int:restaurant_id>/new/', methods = ['GET', 'POST'])
 def newMenuItem(restaurant_id):
@@ -499,7 +507,7 @@ def getUserId(email):
         return None
 
 
-def alertFunction(event):
+def authorizationAlert(event):
 
     script =  "<script>function authorizationAlert() {"
     script +=                "alert(\'You are not authorized to " + event + " this restaurant! "
