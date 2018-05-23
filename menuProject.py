@@ -344,6 +344,8 @@ def showMenu(restaurant_id):
         # return "This page is the menu for restaurant %s" % restaurant_id
         return render_template('menu.html', restaurant = restaurant, items = items, creator=creator)
 
+# New Menu
+#########################
 @app.route('/restaurant/<int:restaurant_id>/new/', methods = ['GET', 'POST'])
 def newMenuItem(restaurant_id):
     # Check to see if a user is logged in.
@@ -380,6 +382,8 @@ def newMenuItem(restaurant_id):
     else:
         return render_template('newMenuItem.html', title = "New Menu Item Input", restaurant = restaurant)
 
+# Edit Menu
+#########################
 @app.route('/restaurant/<int:restaurant_id>/menu/<int:menu_id>/edit/', methods = ['GET', 'POST'])
 def editMenuItem(restaurant_id, menu_id):
     # Check to see if a user is logged in.
@@ -417,6 +421,8 @@ def editMenuItem(restaurant_id, menu_id):
         restaurant = session.query(Restaurant).filter_by(id = restaurant_id).one()
         return render_template('editMenuItem.html', title = 'Edit Menu Item', restaurant = restaurant, item = item)
 
+# Delete Menu
+#########################
 @app.route('/restaurant/<int:restaurant_id>/menu/<int:menu_id>/delete/', methods = ['GET', 'POST'])
 def deleteMenuItem(restaurant_id, menu_id):
     # Check to see if a user is logged in.
@@ -445,6 +451,7 @@ def deleteMenuItem(restaurant_id, menu_id):
 
 # EXPOSE API Endpoints in JSON
 #/restaurants/JSON
+##############################
 @app.route('/restaurants/JSON')
 def showRestaurantsJSON():
     # query db for all restaurants to jsonify
