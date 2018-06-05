@@ -90,10 +90,46 @@
             }(document, 'script', 'facebook-jssdk'));
 
 
-            </script>
+            // Check user FB Login status
+            function sendTokenToServer() {
+                var access_token = FB.getAuthResponse()['accessToken'];
+                console.log('Welcome! Fetching your access token now...');
+                console.log(access_token);
+                FB.api('/me', function(response){
+                    console.log('Successful login for ' + response.name);
+                    $.ajax({
+                        type: 'POST',
+                        url: 'fbconnect?state={{STATE}}',
+                        processData: false,
+                        data: access_token,
+                        contentType: 'application/octet-stream; charset=utf-8',
+                        success: function(result){
+                            // Handle/verify server response as necessary
 
 
 
+                        },
+
+
+                    });
+
+                });
+            }
+
+
+
+
+        </script>
+
+        <button>
+            <fb:login-button scope="public_profile,email" onlogin="sendTokenToServer();">
+                <a href='javascript:sendTokenToServer()'>Login with Facebook</a>
+            </fb:login-button>
+        </button>
+
+
+
+        <!--END FB SIGN IN -->
 
 
     </body>
