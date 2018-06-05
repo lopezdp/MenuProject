@@ -23,7 +23,7 @@ This is a GrubHub clone application that allows the user to view different resta
 7. Need to Style the page using Jinja templates & CSS.
 8. Users can login and register using Google+ API.
 9. Local Permission System to allow users private access to user content.
-10. Facebook authentication soon...
+10. Users can login and register using Facebook Login API
 
 ## License
 The content of this repository is licensed under a [**GNU General Public License v3.0**](https://choosealicense.com/licenses/gpl-3.0)
