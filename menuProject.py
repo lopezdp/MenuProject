@@ -213,8 +213,7 @@ def fbconnect():
     app_secret = json.loads(open('fb_client_secrets', 'r').read())['web']['app_secret']
 
     # Access Endpoint for API
-    url = 'https"//graph.facebook.com/oauth/access_token?grant_type=fb_exchange_token&' +
-        'client_id=%s&client_secret=%s&fb_exchange_token=%s' % (app_id, app_secret, access_token)
+    url = 'https"//graph.facebook.com/oauth/access_token?grant_type=fb_exchange_token&client_id=%s&client_secret=%s&fb_exchange_token=%s' % (app_id, app_secret, access_token)
 
     # Init an Http object and create an http GET request to API URL
     h = httplib2.Http()
