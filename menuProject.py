@@ -220,12 +220,12 @@ def fbconnect():
     result = h.request(url, 'GET')[1]
 
     # Use the access_token to obtain user_info
-    userinfo_url = 'https://graph.facebook.com/v3.0/me'
+    userinfo_url = 'https://graph.facebook.com/v2.2/me'
     # strip expire tag from access_token
     token = result.split('&')[0]
 
     # Init an Http object and create an http GET request to API URL
-    url = 'https://graph.facebook.com/v3.0/me?access_token=%s&fields=name,id,email' % token
+    url = 'https://graph.facebook.com/v2.2/me?access_token=%s&fields=name,id,email' % token
     h = httplib2.Http()
     result = h.request(url, 'GET')[1]
 
@@ -239,7 +239,7 @@ def fbconnect():
     login_session['facebook_id'] = data['id']
 
     # Get User picture
-    url = 'https://graph.facebook.com/v3.0/me/picture?%s&redirect=0&height=200&width=200' % token
+    url = 'https://graph.facebook.com/v2.2/me/picture?%s&redirect=0&height=200&width=200' % token
     h = httplib2.Http()
     result = h.request(url, 'GET')[1]
 
