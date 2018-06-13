@@ -123,6 +123,7 @@ def gconnect():
         return response
 
     # Save the access_token for later use dude
+    login_session['provider'] = 'google'
     login_session['access_token'] = credentials.access_token
     login_session['gplus_id'] = gplus_id
 
@@ -210,7 +211,7 @@ def fbconnect():
 
     # Read json file in dir to obtain API credentials
     app_id = json.loads(open('fb_client_secrets.json', 'r').read())['web']['app_id']
-    app_secret = json.loads(open('fb_client_secrets', 'r').read())['web']['app_secret']
+    app_secret = json.loads(open('fb_client_secrets.json', 'r').read())['web']['app_secret']
 
     # Access Endpoint for API
     url = 'https"//graph.facebook.com/oauth/access_token?grant_type=fb_exchange_token&client_id=%s&client_secret=%s&fb_exchange_token=%s' % (app_id, app_secret, access_token)
@@ -269,17 +270,43 @@ def fbconnect():
     # Return output
     return output
 
+# FB DisConnect
+##############################
+@app.route('/fbdisconnect')
+def fbdisconnect():
+    facebook_id = login_session['facebook_id']
+    url = 'https://graph.facebook.com/%s/permissions' % facebook_id
+    h = httplib2.Http()
+    result = h.request(url, 'DELETE')[1]
+    del login_session['username']
+    del login_session['email']
+    del login_session['picture']
+    del login_session['user_id']
+    del login_session['facebook_id']
+    return "You've been Logged out!"
 
-
-
-
-
-
-
-
-
-
-
+# Abstract DisConnect
+##############################
+@app.route('/disconnect')
+def disconnect():
+    if 'provider' in login_session:
+        if login_session['provider'] == 'google':
+            gdisconnect()
+            del login_session['access_token']
+            del login_session['gplus_id']
+        if login_session['provider'] == 'facebook':
+            fbdisconnect()
+            del login_session['facebook_id']
+        del login_session['username']
+        del login_session['email']
+        del login_session['picture']
+        del login_session['user_id']
+        del login_session['provider']
+        flash("You've been Logged out!")
+        return redirect(url_for('showRestaurants'))
+    else:
+        flash("You've were never logged in!")
+        return redirect(url_for('showRestaurants'))
 
 # Building Endpoints/Route Handlers "Local Routing" (GET Request)
 #################################################################
